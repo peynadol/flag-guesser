@@ -5,10 +5,12 @@ import FlagCard from "./FlagCard";
 import GuessInput from "./GuessInput";
 import AnswerCounter from "./AnswerCounter";
 import RoundComplete from "./RoundComplete";
+import GameSettings from "./GameSettings";
 
 const BASE_URL = "https://restcountries.com/v3.1/";
 
 function App() {
+  const [gamePhase, setGamePhase] = useState("settings"); // can be settings, playing, complete
   const [allCountries, setAllCountries] = useState([]);
   const [gameRoundCountries, setGameRoundCountries] = useState([]);
   const [currentCountryIndex, setCurrentCountryIndex] = useState(0);
@@ -16,6 +18,8 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   const [userGuess, setUserGuess] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
+  const [flagCountInput, setFlagCountInput] = useState("5");
+  const [selectedContinent, setSelectedContinent] = useState(null);
 
   useEffect(() => {
     const getAllCountries = async () => {
@@ -32,29 +36,42 @@ function App() {
     getAllCountries();
   }, []);
 
-  useEffect(() => {
-    if (allCountries.length > 0) {
-      const shuffled = arrayShuffle(allCountries);
-      const firstFive = shuffled.slice(0, 5);
-      setGameRoundCountries(firstFive);
-      setCurrentCountryIndex(0);
-    }
-  }, [allCountries]);
-
-  const handleInputChange = (event) => {
+  const handleGuessInputChange = (event) => {
     setInputValue(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleGuessSubmit = (event) => {
     event.preventDefault();
     setPreviousCountryIndex(currentCountryIndex);
     const isCorrect = checkCorrect(inputValue, currentCountryIndex);
+
     if (isCorrect) {
       setCorrectCount((prev) => prev + 1);
     }
+
     setUserGuess(inputValue);
     setInputValue("");
-    setCurrentCountryIndex((prev) => prev + 1);
+
+    if (currentCountryIndex >= gameRoundCountries.length - 1) {
+      setGamePhase("complete");
+    } else {
+      setCurrentCountryIndex((prev) => prev + 1);
+    }
+  };
+
+  const handleSettingsSubmit = (event) => {
+    event.preventDefault();
+    let num = parseInt(flagCountInput) || 5;
+    if (num < 1) num = 1;
+    if (num > 50) num = 50;
+
+    setGamePhase("playing");
+    startNewGame(num);
+  };
+
+  const handleFlagCountChange = (event) => {
+    const value = event.target.value.replace(/\D/g, "");
+    setFlagCountInput(value || "5");
   };
 
   const checkCorrect = (guess, index) => {
@@ -67,50 +84,72 @@ function App() {
     return names.includes(guess.toLowerCase().trim());
   };
 
-  const isRoundComplete = currentCountryIndex >= gameRoundCountries.length;
+  const handleContinentSelect = (continent) => {
+    setSelectedContinent(continent); // "Europe" or null
+  };
 
-  const resetGame = () => {
-    const newShuffled = arrayShuffle(allCountries.slice(0, 5));
-    setGameRoundCountries(newShuffled);
+  const startNewGame = (flagCount) => {
+    const filteredCountries = selectedContinent
+      ? allCountries.filter((c) => c.region === selectedContinent)
+      : allCountries;
+
+    const selectedCountries = arrayShuffle(filteredCountries).slice(
+      0,
+      flagCount
+    );
+
+    setGameRoundCountries(selectedCountries);
     setCurrentCountryIndex(0);
     setCorrectCount(0);
     setUserGuess("");
+    setInputValue("");
   };
 
-  return isRoundComplete ? (
-    <RoundComplete
-      onReset={resetGame}
-      correctCount={correctCount}
-      totalQuestions={gameRoundCountries.length}
-    />
-  ) : (
+  const resetGame = () => {
+    setGamePhase("settings");
+  };
+
+  return (
     <>
-      {/* Game Screen */}
-      {gameRoundCountries[currentCountryIndex] && (
+      {gamePhase === "settings" ? (
+        <GameSettings
+          onStart={startNewGame}
+          isLoading={allCountries.length === 0}
+          onSubmit={handleSettingsSubmit}
+          onChange={handleFlagCountChange}
+          currentContinent={selectedContinent}
+          onSelect={handleContinentSelect}
+        />
+      ) : gamePhase === "complete" ? (
+        <RoundComplete
+          onReset={resetGame}
+          score={`${correctCount}/${gameRoundCountries.length}`}
+        />
+      ) : (
         <>
-          <FlagCard flag={gameRoundCountries[currentCountryIndex].flags} />
-          <GuessInput
-            value={inputValue}
-            onChange={handleInputChange}
-            onSubmit={handleSubmit}
+          {gameRoundCountries[currentCountryIndex] && (
+            <>
+              <FlagCard flag={gameRoundCountries[currentCountryIndex].flags} />
+              <GuessInput
+                value={inputValue}
+                onChange={handleGuessInputChange}
+                onSubmit={handleGuessSubmit}
+              />
+            </>
+          )}
+          {userGuess && (
+            <p>
+              {checkCorrect(userGuess, previousCountryIndex)
+                ? "Correct"
+                : "Incorrect"}
+            </p>
+          )}
+          <AnswerCounter
+            questionNumber={currentCountryIndex + 1}
+            questionAmount={gameRoundCountries.length}
           />
         </>
       )}
-
-      {/* Feedback Message */}
-      {userGuess && (
-        <p>
-          {checkCorrect(userGuess, previousCountryIndex)
-            ? "Correct"
-            : "Incorrect"}
-        </p>
-      )}
-
-      {/* Counter */}
-      <AnswerCounter
-        questionNumber={currentCountryIndex + 1}
-        questionAmount={gameRoundCountries.length}
-      />
     </>
   );
 }

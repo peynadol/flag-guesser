@@ -3,7 +3,12 @@ export default function GuessInput(props) {
     <>
       <form onSubmit={props.onSubmit}>
         <label>Guess the country!</label>
-        <input type="text" onChange={props.onChange} value={props.value} />
+        <input
+          type="text"
+          onChange={props.onChange}
+          value={props.value}
+          autoFocus
+        />
       </form>
     </>
   );
