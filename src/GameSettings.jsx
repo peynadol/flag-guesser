@@ -16,37 +16,54 @@ export default function GameSettings({
       <button
         type="button"
         onClick={() => onSelect(null)}
-        className={!currentContinent ? "active" : ""}
+        className={`continent-btn ${!currentContinent ? "active" : ""}`}
       >
         Worldwide
       </button>
       <button
         type="button"
         onClick={() => onSelect("Europe")}
-        className={currentContinent === "Europe" ? "active" : ""}
+        className={`continent-btn ${
+          currentContinent === "Europe" ? "active" : ""
+        }`}
       >
         Europe
       </button>
       <button
         type="button"
         onClick={() => onSelect("Asia")}
-        className={currentContinent === "Asia" ? "active" : ""}
+        className={`continent-btn ${
+          currentContinent === "Asia" ? "active" : ""
+        }`}
       >
         Asia
       </button>
       <button
         type="button"
         onClick={() => onSelect("Africa")}
-        className={currentContinent === "Africa" ? "active" : ""}
+        className={`continent-btn ${
+          currentContinent === "Africa" ? "active" : ""
+        }`}
       >
         Africa
       </button>
       <button
         type="button"
         onClick={() => onSelect("Oceania")}
-        className={currentContinent === "Oceania" ? "active" : ""}
+        className={`continent-btn ${
+          currentContinent === "Oceania" ? "active" : ""
+        }`}
       >
         Oceania
+      </button>
+      <button
+        type="button"
+        onClick={() => onSelect("Americas")}
+        className={`continent-btn ${
+          currentContinent === "Americas" ? "active" : ""
+        }`}
+      >
+        Americas
       </button>
     </form>
   );

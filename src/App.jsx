@@ -30,7 +30,7 @@ function App() {
         setAllCountries(data);
       } catch (err) {
         console.error("Fetch error:", err);
-        setAllCountries(null);
+        setAllCountries([]);
       }
     };
     getAllCountries();
@@ -65,8 +65,8 @@ function App() {
     if (num < 1) num = 1;
     if (num > 50) num = 50;
 
-    setGamePhase("playing");
     startNewGame(num);
+    setGamePhase("playing");
   };
 
   const handleFlagCountChange = (event) => {
