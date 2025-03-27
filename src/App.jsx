@@ -20,6 +20,7 @@ function App() {
   const [correctCount, setCorrectCount] = useState(0);
   const [flagCountInput, setFlagCountInput] = useState("5");
   const [selectedContinent, setSelectedContinent] = useState(null);
+  const [incorrectAnswers, setIncorrectAnswers] = useState([]);
 
   useEffect(() => {
     const getAllCountries = async () => {
@@ -47,6 +48,14 @@ function App() {
 
     if (isCorrect) {
       setCorrectCount((prev) => prev + 1);
+    } else {
+      setIncorrectAnswers((prev) => [
+        ...prev,
+        {
+          country: gameRoundCountries[currentCountryIndex],
+          userGuess: inputValue,
+        },
+      ]);
     }
 
     setUserGuess(inputValue);
@@ -89,6 +98,7 @@ function App() {
   };
 
   const startNewGame = (flagCount) => {
+    setIncorrectAnswers([]);
     const filteredCountries = selectedContinent
       ? allCountries.filter((c) => c.region === selectedContinent)
       : allCountries;
@@ -106,6 +116,7 @@ function App() {
   };
 
   const resetGame = () => {
+    setIncorrectAnswers([]);
     setGamePhase("settings");
   };
 
@@ -123,6 +134,7 @@ function App() {
       ) : gamePhase === "complete" ? (
         <RoundComplete
           onReset={resetGame}
+          incorrectAnswers={incorrectAnswers}
           score={`${correctCount}/${gameRoundCountries.length}`}
         />
       ) : (
