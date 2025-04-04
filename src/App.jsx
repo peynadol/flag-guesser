@@ -25,7 +25,12 @@ function App() {
   useEffect(() => {
     const getAllCountries = async () => {
       try {
-        const response = await fetch(`${BASE_URL}all`);
+        const response = await fetch(`${BASE_URL}all`, {
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
         setAllCountries(data);
