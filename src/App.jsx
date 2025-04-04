@@ -7,8 +7,7 @@ import AnswerCounter from "./AnswerCounter";
 import RoundComplete from "./RoundComplete";
 import GameSettings from "./GameSettings";
 
-const BASE_URL = "https://restcountries.com/v3.1/";
-const PROXY = "https://corsproxy.io/?url="
+const BASE_URL = "https://flag-proxy.vercel.app/api/countries"
 
 function App() {
   const [gamePhase, setGamePhase] = useState("settings"); // can be settings, playing, complete
@@ -26,7 +25,7 @@ function App() {
   useEffect(() => {
     const getAllCountries = async () => {
       try {
-        const response = await fetch(`${PROXY}${BASE_URL}all`)
+        const response = await fetch(`{${BASE_URL}}`)
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
         setAllCountries(data);
