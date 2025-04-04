@@ -7,12 +7,25 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Dependency directories
+node_modules/
+/.pnp
+.pnp.js
+
+# Vite-specific
+.cache/
+.temp/
 *.local
-todos.txt
-spec.md
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+dist-ssr/
+.vite-inspect/
 
 # Editor directories and files
 .vscode/*
@@ -24,3 +37,11 @@ spec.md
 *.njsproj
 *.sln
 *.sw?
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Custom files you want to ignore
+todos.txt
+spec.md
