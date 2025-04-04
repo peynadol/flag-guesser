@@ -7,7 +7,8 @@ import AnswerCounter from "./AnswerCounter";
 import RoundComplete from "./RoundComplete";
 import GameSettings from "./GameSettings";
 
-const BASE_URL = "https://flag-proxy.vercel.app/api/countries"
+const BASE_URL = "https://restcountries.com/v3.1/all"
+
 
 function App() {
   const [gamePhase, setGamePhase] = useState("settings"); // can be settings, playing, complete
