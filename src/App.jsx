@@ -72,7 +72,7 @@ function App() {
     event.preventDefault();
     let num = parseInt(flagCountInput) || 5;
     if (num < 1) num = 1;
-    if (num > 50) num = 50;
+    if (num > 20) num = 20;
 
     startNewGame(num);
     setGamePhase("playing");
@@ -136,6 +136,8 @@ function App() {
           onReset={resetGame}
           incorrectAnswers={incorrectAnswers}
           score={`${correctCount}/${gameRoundCountries.length}`}
+          correctCount={correctCount}
+          totalQuestions={gameRoundCountries.length}
         />
       ) : (
         <>

@@ -1,7 +1,7 @@
 export default function AnswerCounter(props) {
   return (
     <>
-      <p>
+      <p className="answer-counter">
         Flag {props.questionNumber} of {props.questionAmount}
       </p>
     </>

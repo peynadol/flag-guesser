@@ -1,7 +1,7 @@
 export default function GuessInput(props) {
   return (
     <>
-      <form onSubmit={props.onSubmit}>
+      <form className="guess-input" onSubmit={props.onSubmit}>
         <label>Guess the country!</label>
         <input
           type="text"

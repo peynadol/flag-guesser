@@ -10,7 +10,7 @@ export default function GameSettings({
     <div className="settings-container">
       <form onSubmit={onSubmit}>
         <div className="form-group">
-          <label>How many flags would you like to guess? (1-50)</label>
+          <label>How many flags would you like to guess? (1-20)</label>
           <input type="text" value={flagCount} onChange={onChange} />
         </div>
 
@@ -29,45 +29,40 @@ export default function GameSettings({
           <button
             type="button"
             onClick={() => onSelect("Europe")}
-            className={`continent-btn ${
-              currentContinent === "Europe" ? "active" : ""
-            }`}
+            className={`continent-btn ${currentContinent === "Europe" ? "active" : ""
+              }`}
           >
             Europe
           </button>
           <button
             type="button"
             onClick={() => onSelect("Asia")}
-            className={`continent-btn ${
-              currentContinent === "Asia" ? "active" : ""
-            }`}
+            className={`continent-btn ${currentContinent === "Asia" ? "active" : ""
+              }`}
           >
             Asia
           </button>
           <button
             type="button"
             onClick={() => onSelect("Africa")}
-            className={`continent-btn ${
-              currentContinent === "Africa" ? "active" : ""
-            }`}
+            className={`continent-btn ${currentContinent === "Africa" ? "active" : ""
+              }`}
           >
             Africa
           </button>
           <button
             type="button"
             onClick={() => onSelect("Oceania")}
-            className={`continent-btn ${
-              currentContinent === "Oceania" ? "active" : ""
-            }`}
+            className={`continent-btn ${currentContinent === "Oceania" ? "active" : ""
+              }`}
           >
             Oceania
           </button>
           <button
             type="button"
             onClick={() => onSelect("Americas")}
-            className={`continent-btn ${
-              currentContinent === "Americas" ? "active" : ""
-            }`}
+            className={`continent-btn ${currentContinent === "Americas" ? "active" : ""
+              }`}
           >
             Americas
           </button>
