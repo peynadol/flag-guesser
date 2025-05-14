@@ -7,8 +7,7 @@ import AnswerCounter from "./AnswerCounter";
 import RoundComplete from "./RoundComplete";
 import GameSettings from "./GameSettings";
 
-const BASE_URL = "https://restcountries.com/v3.1/all"
-
+const BASE_URL = "https://restcountries.com/v3.1/all";
 
 function App() {
   const [gamePhase, setGamePhase] = useState("settings"); // can be settings, playing, complete
@@ -26,7 +25,7 @@ function App() {
   useEffect(() => {
     const getAllCountries = async () => {
       try {
-        const response = await fetch(BASE_URL)
+        const response = await fetch(BASE_URL);
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
         setAllCountries(data);
@@ -141,29 +140,29 @@ function App() {
           totalQuestions={gameRoundCountries.length}
         />
       ) : (
-        <>
-          {gameRoundCountries[currentCountryIndex] && (
-            <>
-              <FlagCard flag={gameRoundCountries[currentCountryIndex].flags} />
-              <GuessInput
-                value={inputValue}
-                onChange={handleGuessInputChange}
-                onSubmit={handleGuessSubmit}
-              />
-            </>
-          )}
-          {userGuess && (
-            <p>
-              {checkCorrect(userGuess, previousCountryIndex)
-                ? "Correct"
-                : "Incorrect"}
-            </p>
-          )}
-          <AnswerCounter
-            questionNumber={currentCountryIndex + 1}
-            questionAmount={gameRoundCountries.length}
-          />
-        </>
+        gameRoundCountries[currentCountryIndex] && (
+          <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 space-y-4">
+            <FlagCard flag={gameRoundCountries[currentCountryIndex].flags} />
+            <GuessInput
+              value={inputValue}
+              onChange={handleGuessInputChange}
+              onSubmit={handleGuessSubmit}
+            />
+
+            {userGuess && (
+              <p>
+                {checkCorrect(userGuess, previousCountryIndex)
+                  ? "Correct"
+                  : "Incorrect"}
+              </p>
+            )}
+
+            <AnswerCounter
+              questionNumber={currentCountryIndex + 1}
+              questionAmount={gameRoundCountries.length}
+            />
+          </div>
+        )
       )}
     </>
   );
